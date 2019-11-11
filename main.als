@@ -1,8 +1,6 @@
 sig Veiculo { 
 }
 
-
-
 abstract sig Pessoa {}
     
 sig Morador extends Pessoa {
@@ -36,13 +34,13 @@ fact evitaVeiculosRepetidosVisitanteMorador {
     no disj  m1: Morador, v1: Visitante | some m1.veiculos & v1.veic 
 }
 
-// fato que determina que o morador possui mo maximo 3 veiculos e o visitante no maximo 1
+// fato que determina que o morador possui mo maximo 3 veiculos e o visitante 1 veiculo
 fact maximoVeiculos{
-    all m: Morador | #m.veiculos <= 3
-    all v: Visitante | #v.veic <= 1
+    all m: Morador |  #(m.veiculos + m.visitantes) < 4
+    all v: Visitante | #v.veic = 1
 }
 
 
 
 pred show() {}
-run show for 6
+run show for 5
