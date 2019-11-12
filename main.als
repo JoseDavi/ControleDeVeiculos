@@ -1,4 +1,8 @@
-sig Veiculo { 
+open util/boolean
+
+sig Veiculo {
+    validade: Bool,
+    tempo: Int
 }
 
 abstract sig Pessoa {}
@@ -13,7 +17,7 @@ sig Visitante extends Pessoa {
 }
 
 // Esse fato determina que so pode existir veiculos caso exista um dono
-fact veiculosComDono{
+fact veiculosComDono {
     all v: Visitante| one v.~visitantes
     all vei: Veiculo | one vei.~veiculos or one vei.~veic
 }
@@ -35,12 +39,20 @@ fact evitaVeiculosRepetidosVisitanteMorador {
 }
 
 // fato que determina que o morador possui mo maximo 3 veiculos e o visitante 1 veiculo
-fact maximoVeiculos{
+fact maximoVeiculos {
     all m: Morador |  #(m.veiculos + m.visitantes) < 4
     all v: Visitante | #v.veic = 1
 }
 
+// Fato que determina a quantidade de dias maximos que um veiculo pode passar na garagem
+fact ValidadeMaxima {
+    all v: Veiculo, m: Morador, vi: Visitante| ((v.~veiculos = m) and (v.tempo <= 30)) or ((v.~veic = vi) and (v.tempo <= 1))
+}
 
+// Fato que determina a Validade de um veiculo.
+fact VerificaStatus {
+    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True))
+}
 
 pred show() {}
-run show for 5
+run show for 2
