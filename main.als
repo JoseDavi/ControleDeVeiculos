@@ -1,32 +1,7 @@
 sig Veiculo { 
 }
-sig Condominio{
-    moradores: set Morador,
-    garagem: one Garagem
-}
-
-sig Garagem{
-    carros: set Veiculo
-}
-
-fact evitaVeiculosRepetidosCondominio {
-    no disj c1, c2: Condominio | some c1.moradores & c2.moradores 
-}
-
-fact evitaVeiculosRepetidosGaragem {
-    no disj g1, g2: Garagem | some g1.carros & g2.carros 
-}
-
-fact evitaGaragemRepetida {
-    no disj c1, c2: Condominio | some c1.garagem & c2.garagem
-}
-
-fact maximoVeiculosGaragem {
-    all g: Garagem |  #(g.carros) < 3
-}
-
 fact maximoMoradoresCondomio {
-    all c: Condominio |  #(c.moradores) < 2
+    #(Morador) < 6
 }
 
 abstract sig Pessoa {}
