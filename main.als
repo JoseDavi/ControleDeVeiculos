@@ -19,6 +19,30 @@ sig Morador extends Pessoa {
     visitantes: set Visitante
 }
 
+sig Antes{
+    entrando: lone Veiculo
+}
+
+sig Durante{
+    entre: lone Veiculo
+}
+
+sig Depois{
+    saindo: lone Veiculo
+}
+
+fact evitaStatus{
+    no disj antes: Antes, durante: Durante| some antes.entrando & durante.entre
+    no disj antes: Antes, depois: Depois| some antes.entrando & depois.saindo
+    no disj depois: Depois, durante: Durante| some depois.saindo & durante.entre
+}
+
+fact MaxCatraca{
+    #(Antes) = 1
+    #(Durante) = 1
+    #(Depois) = 1
+}
+
 sig Visitante extends Pessoa {
     veic: set Veiculo
 }
