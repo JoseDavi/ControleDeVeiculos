@@ -1,5 +1,13 @@
-sig Veiculo { 
+open util/boolean
+
+
+sig Veiculo {
+    validade: Bool,
+    tempo: Int
 }
+
+// Fato que limita o número de moradores.
+// Possui um problema onde, por algum motivo, o numero maximo de moradores não pode ser maior que 5.
 fact maximoMoradoresCondomio {
     #(Morador) < 6
 }
@@ -42,7 +50,11 @@ fact maximoVeiculos{
     all m: Morador |  #(m.veiculos + m.visitantes) < 4
     all v: Visitante | #v.veic = 1
 }
-
+// Fato que determina a Validade de um veiculo.
+// Possui um problema onde, por algum motivo, o tempo maximo não pode ser maior que 5.
+fact VerificaStatus {
+    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 6))
+}
 
 
 pred show() {}
