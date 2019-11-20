@@ -77,7 +77,7 @@ fact maximoVeiculos{
 // Fato que determina a Validade de um veiculo.
 // Possui um problema onde, por algum motivo, o tempo maximo não pode ser maior que 5.
 fact VerificaStatus {
-    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 6))
+    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 3))
 }
 
 
