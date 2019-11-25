@@ -6,10 +6,10 @@ ASSIGN
 	init(carro) := esperando;
 	next(carro) :=
 		case
-			carro = esperando & controle.estado = esperando : entrando;
-			carro = entrando & controle.cancela2 = TRUE : entrou;
-			carro = entrou: esperando;
-			TRUE : {esperando, entrando, entrou};
+			carro = esperando & (controle.cancela1 | controle.cancela2): entrando;
+			carro = entrou | (carro = entrando & controle.cancela1): esperando;
+			carro = entrando & !controle.cancela1 & !controle.cancela2: entrou;
+			TRUE : carro;
 		esac;
 -- Impede que um carro entre enquanto o controle espera
 SPEC AG ! (carro = entrando & controle.estado = esperando)
@@ -24,11 +24,11 @@ ASSIGN
 	init(cancela2) := FALSE;
 	init(estado) := esperando;
 	next(estado) :=
-			case
-				estado = esperando & carro = esperando : ocupado;
-				estado = ocupado & cancela2 : esperando;
-				TRUE: estado;
-			esac;
+		case
+			estado = esperando & carro = esperando : ocupado;
+			estado = ocupado & carro = entrou : esperando;
+			TRUE: estado;
+		esac;
 	next(cancela1) :=
 		case
 			estado = esperando & carro = esperando: TRUE;
@@ -37,8 +37,8 @@ ASSIGN
 		esac;
 	next(cancela2) :=
 		case
-			estado = esperando: FALSE;
-			estado = ocupado & !cancela1 : TRUE;
+			carro = entrando & estado = ocupado & !cancela1: FALSE;
+			estado = ocupado & carro != entrou & !cancela1 : TRUE;
 			TRUE: cancela2;
 		esac;
 -- Impede que as duas cancelas fiquem abertas ao mesmo tempo
