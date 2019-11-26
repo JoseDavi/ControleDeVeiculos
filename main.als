@@ -82,5 +82,5 @@ fact VerificaStatus {
 
 
 pred show() {}
-run show for 5 but 5 int
+run show for 7 but 7 int
 
