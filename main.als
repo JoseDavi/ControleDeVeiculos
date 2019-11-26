@@ -7,7 +7,6 @@ sig Veiculo {
 }
 
 // Fato que limita o número de moradores.
-// Possui um problema onde, por algum motivo, o numero maximo de moradores não pode ser maior que 5.
 fact maximoMoradoresCondomio {
     #(Morador) < 11
 }
@@ -19,6 +18,7 @@ sig Morador extends Pessoa {
     visitantes: set Visitante
 }
 
+//Basicamente esse Antes, Durante e Depois são os estados da catraca, onde pode ou não ter um carro.
 sig Antes{
     entrando: lone Veiculo
 }
@@ -31,12 +31,13 @@ sig Depois{
     saindo: lone Veiculo
 }
 
+//Aqui não permite ter o mesmo carro em 2 cantos diferentes da catraca
 fact evitaStatus{
     no disj antes: Antes, durante: Durante| some antes.entrando & durante.entre
     no disj antes: Antes, depois: Depois| some antes.entrando & depois.saindo
     no disj depois: Depois, durante: Durante| some depois.saindo & durante.entre
 }
-
+//Limitando pra os estados da catraca serem unicos
 fact MaxCatraca{
     #(Antes) = 1
     #(Durante) = 1
@@ -75,7 +76,6 @@ fact maximoVeiculos{
     all v: Visitante | #v.veic = 1
 }
 // Fato que determina a Validade de um veiculo.
-// Possui um problema onde, por algum motivo, o tempo maximo não pode ser maior que 5.
 fact VerificaStatus {
     all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 31))
 }
