@@ -9,7 +9,7 @@ sig Veiculo {
 // Fato que limita o número de moradores.
 // Possui um problema onde, por algum motivo, o numero maximo de moradores não pode ser maior que 5.
 fact maximoMoradoresCondomio {
-    #(Morador) < 6
+    #(Morador) < 11
 }
 
 abstract sig Pessoa {}
@@ -77,9 +77,10 @@ fact maximoVeiculos{
 // Fato que determina a Validade de um veiculo.
 // Possui um problema onde, por algum motivo, o tempo maximo não pode ser maior que 5.
 fact VerificaStatus {
-    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 3))
+    all v: Veiculo | ((v.tempo = 0) and (v.validade = False)) or ((v.tempo > 0) and (v.validade = True) and (v.tempo < 31))
 }
 
 
 pred show() {}
-run show for 5
+run show for 5 but 5 int
+
